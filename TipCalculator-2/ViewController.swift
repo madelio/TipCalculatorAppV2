@@ -132,10 +132,8 @@ class ViewController: UIViewController {
     var totalPrice: Double {
         
         get {
-            
              let totalFromFormatter = formatter.number(from: totalPriceText.text ?? "$0.00")!
             return totalFromFormatter.doubleValue
-       
         }
         set {
             
