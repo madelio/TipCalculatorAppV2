@@ -54,14 +54,22 @@
 		21FDCDEF1FAEA4A70042331F /* TipCalculator-2 */ = {
 			isa = PBXGroup;
 			children = (
+				21FDCE021FAEA7390042331F /* Supporting Files */,
 				21FDCDF01FAEA4A70042331F /* AppDelegate.swift */,
 				21FDCDF21FAEA4A70042331F /* ViewController.swift */,
 				21FDCDF41FAEA4A70042331F /* Main.storyboard */,
+			);
+			path = "TipCalculator-2";
+			sourceTree = "<group>";
+		};
+		21FDCE021FAEA7390042331F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
 				21FDCDF71FAEA4A70042331F /* Assets.xcassets */,
 				21FDCDF91FAEA4A70042331F /* LaunchScreen.storyboard */,
 				21FDCDFC1FAEA4A70042331F /* Info.plist */,
 			);
-			path = "TipCalculator-2";
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
