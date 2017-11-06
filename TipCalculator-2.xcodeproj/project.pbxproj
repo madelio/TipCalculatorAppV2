@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		213BEC071FB0F99D00E75A32 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213BEC061FB0F99D00E75A32 /* SettingsTableViewController.swift */; };
 		21FDCDF11FAEA4A70042331F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FDCDF01FAEA4A70042331F /* AppDelegate.swift */; };
 		21FDCDF31FAEA4A70042331F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FDCDF21FAEA4A70042331F /* ViewController.swift */; };
 		21FDCDF61FAEA4A70042331F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21FDCDF41FAEA4A70042331F /* Main.storyboard */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		213BEC061FB0F99D00E75A32 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		21FDCDED1FAEA4A70042331F /* TipCalculator-2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TipCalculator-2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		21FDCDF01FAEA4A70042331F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		21FDCDF21FAEA4A70042331F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -58,6 +60,7 @@
 				21FDCDF01FAEA4A70042331F /* AppDelegate.swift */,
 				21FDCDF21FAEA4A70042331F /* ViewController.swift */,
 				21FDCDF41FAEA4A70042331F /* Main.storyboard */,
+				213BEC061FB0F99D00E75A32 /* SettingsTableViewController.swift */,
 			);
 			path = "TipCalculator-2";
 			sourceTree = "<group>";
@@ -147,6 +150,7 @@
 			files = (
 				21FDCDF31FAEA4A70042331F /* ViewController.swift in Sources */,
 				21FDCDF11FAEA4A70042331F /* AppDelegate.swift in Sources */,
+				213BEC071FB0F99D00E75A32 /* SettingsTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

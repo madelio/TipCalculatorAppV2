@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, SettingsViewControllerDelegate {
     
     @IBOutlet weak var totalPriceView: UIView!
     @IBOutlet weak var calculatorView: UIView!
@@ -20,25 +20,40 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var totalPriceText: UILabel!
     
-    let tipPercentages = [0.15, 0.18,0.20]
+    var tipPercentages = [0.15, 0.18, 0.20]
+    var defaultTipIndex = 0
     var keyboardYPosition:CGFloat = 0.0
     var inputPriceIsEmpty = true
     var isRoundedUp = false
+    
+    var canRound = true
     
     let formatter = NumberFormatter()
     
     var originalTotal = 0.0
     var originalTip = 0.0
     
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         mealPriceText.becomeFirstResponder()
         formatter.numberStyle = .currency
+        
+        canRound = defaults.bool(forKey: "canRound")
+        
+        tipPercentageSegmentedControl.selectedSegmentIndex = defaults.integer(forKey: "defaultTipIndex")
+        
+        // figure out how to set to defaultTipIndex
+        print(defaults.integer(forKey: "defaultTipIndex"))
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+
         
     }
     
@@ -79,15 +94,17 @@ class ViewController: UIViewController {
     
     @IBAction func roundUpToggle(_ sender: UITapGestureRecognizer) {
         
-        if isRoundedUp == false {
-            totalPrice = round(totalPrice)
-            tipAmount = tipAmount + (totalPrice - originalTotal)
-            isRoundedUp = true
-
-        } else {
-            totalPrice = originalTotal
-            tipAmount = originalTip
-            isRoundedUp = false
+        if canRound {
+            if isRoundedUp == false {
+                totalPrice = round(totalPrice)
+                tipAmount = tipAmount + (totalPrice - originalTotal)
+                isRoundedUp = true
+                
+            } else {
+                totalPrice = originalTotal
+                tipAmount = originalTip
+                isRoundedUp = false
+            }
         }
         
     }
@@ -138,6 +155,21 @@ class ViewController: UIViewController {
         set {
             
             totalPriceText.text = String(format:"$%.2f", newValue)
+        }
+   }
+    
+    func changedRoundOption(to canRoundVal: Bool) {
+       canRound = canRoundVal
+    }
+
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "toSettings" {
+           let settingsVC = segue.destination as! SettingsTableViewController
+            settingsVC.delegate = self
+            settingsVC.pickerData = tipPercentages
+         
         }
     }
     
