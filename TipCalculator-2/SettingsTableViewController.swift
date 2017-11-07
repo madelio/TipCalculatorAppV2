@@ -101,13 +101,12 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDelegate, 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
             if choosingDefaultTipInProgress {
-                return 40 + tipPicker.frame.height
+                return 45 + tipPicker.frame.height
             } else {
-                return 40
+                return 45
             }
         }
-        
-        return 40
+        return 45
     }
 
     /* Picker Functions */
@@ -125,8 +124,9 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDelegate, 
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        defaultTipLabel.text = String(format: "$%.2f", pickerData[row])
+        defaultTipLabel.text = String(pickerData[row])
         defaultTipIndex = row
+        print(defaultTipIndex)
     }
     
     var defaultTipIndex: Int {
@@ -135,6 +135,7 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDelegate, 
         }
         set {
             defaults.set(newValue, forKey: "defaultTip")
+            defaults.synchronize()
         }
     }
     

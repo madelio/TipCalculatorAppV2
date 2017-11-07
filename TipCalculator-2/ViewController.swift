@@ -42,18 +42,14 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
         formatter.numberStyle = .currency
         
         canRound = defaults.bool(forKey: "canRound")
-        
-        tipPercentageSegmentedControl.selectedSegmentIndex = defaults.integer(forKey: "defaultTipIndex")
-        
-        // figure out how to set to defaultTipIndex
-        print(defaults.integer(forKey: "defaultTipIndex"))
-        
+       tipPercentageSegmentedControl.selectedSegmentIndex = defaults.integer(forKey: "defaultTip")
+
+
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
-
         
     }
     
