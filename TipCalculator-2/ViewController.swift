@@ -157,6 +157,10 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
     func changedRoundOption(to canRoundVal: Bool) {
        canRound = canRoundVal
     }
+    
+    func reset() {
+        tipPercentageSegmentedControl.selectedSegmentIndex = 0
+    }
 
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

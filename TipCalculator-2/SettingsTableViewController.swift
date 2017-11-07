@@ -10,6 +10,7 @@ import UIKit
 
 protocol SettingsViewControllerDelegate: class {
     func changedRoundOption(to: Bool)
+    func reset()
 
 }
 
@@ -17,7 +18,7 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDelegate, 
 
     @IBOutlet weak var defaultTipLabel: UILabel!
 
-    let rowsInSection = [2, 3, 1]
+    let rowsInSection = [2, 1]
     let defaults = UserDefaults.standard
     var choosingDefaultTipInProgress = false
     
@@ -51,7 +52,7 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDelegate, 
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 3
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -62,8 +63,6 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDelegate, 
             return rowsInSection[0]
         case 1:
             return rowsInSection[1]
-        case 2:
-            return rowsInSection[2]
         default:
             return 0
         }
@@ -71,11 +70,6 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDelegate, 
     }
     
     @IBAction func toggleRoundButton(_ sender: UISwitch) {
-        updateRoundUpSettings()
-        delegate?.changedRoundOption(to: canRoundSwitch.isOn)
-    }
-    
-    func updateRoundUpSettings() {
         if canRoundSwitch.isOn {
             canRound = true
         } else {
@@ -99,7 +93,8 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDelegate, 
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == 0 {
+    
+        if indexPath.row == 0 && indexPath.section == 0 {
             if choosingDefaultTipInProgress {
                 return 45 + tipPicker.frame.height
             } else {
@@ -134,6 +129,7 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDelegate, 
             return defaults.integer(forKey: "defaultTip")
         }
         set {
+            defaultTipLabel.text = String(pickerData[newValue])
             defaults.set(newValue, forKey: "defaultTip")
             defaults.synchronize()
         }
@@ -144,12 +140,16 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDelegate, 
             return defaults.bool(forKey: "canRound")
         }
         set {
+            canRoundSwitch.isOn = newValue
             defaults.set(newValue, forKey: "canRound")
+            delegate?.changedRoundOption(to: canRoundSwitch.isOn)
+            defaults.synchronize()
         }
     }
  
-    @IBAction func resetDefaults(_ sender: Any) {
+    @IBAction func resetDefaults(_ sender: UIButton) {
         defaultTipIndex = 0
         canRound = false
+        delegate?.reset()
     }
 }
