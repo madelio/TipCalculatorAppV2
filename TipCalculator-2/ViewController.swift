@@ -35,6 +35,8 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
     
     let defaults = UserDefaults.standard
     
+    private var calculator = TipCalculator()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -43,14 +45,10 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
         
         canRound = defaults.bool(forKey: "canRound")
        tipPercentageSegmentedControl.selectedSegmentIndex = defaults.integer(forKey: "defaultTip")
-
-
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
-        
     }
     
     func keyboardWillShow(notification: NSNotification) {
@@ -58,6 +56,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
             keyboardYPosition = keyboardY.origin.y
         }
     }
+    
     
     func calculateTips() {
         tipAmount = mealPrice * tipPercentages[tipPercentageSegmentedControl.selectedSegmentIndex]
@@ -86,6 +85,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
     
     @IBAction func changeTipPercentage(_ sender: UISegmentedControl) {
         calculateTips()
+        //calculator.calculateTips(with: tipPercentageSegmentedControl.selectedSegmentIndex)
     }
     
     @IBAction func roundUpToggle(_ sender: UITapGestureRecognizer) {
@@ -116,6 +116,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
         }
         
         calculateTips()
+        //calculator.calculateTips(with: tipPercentageSegmentedControl.selectedSegmentIndex)
     }
     
     var mealPrice: Double {
@@ -137,6 +138,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
             let tipFromFormatter = formatter.number(from: tipAmountText.text ?? "$0.00")!
             return tipFromFormatter.doubleValue
         }
+        
         set {
             tipAmountText.text = String(format:"$%.2f", newValue)
         }
