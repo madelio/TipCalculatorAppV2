@@ -11,31 +11,32 @@ import Foundation
 struct TipCalculator {
     
     var mealPrice: Double?
-    var totalPrice: Double?
-    var tipAmount: Double?
+    var total: Double?
+    var tip: Double?
     
     var tipPercentage = [0.15, 0.18, 0.20]
     
     
-    mutating func calculateTips(with percentageIndex: Int) {
+    mutating func calculateTips(with percentageIndex: Int, _ meal: Double) {
         
-        if mealPrice != nil {
-            tipAmount = mealPrice! * tipPercentage[percentageIndex]
-            totalPrice = mealPrice! + tipAmount!
-        }
+        mealPrice = meal
+        
+        tip = meal * tipPercentage[percentageIndex]
+        total = meal + tip!
+        
     }
     
     mutating func changeTipAmt(at index: Int, with value: Double) {
         tipPercentage[index] = value
     }
     
-    mutating func roundVals() -> (Double, Double) {
+    mutating func roundVals() -> (tip: Double, total: Double) {
         var rounded = (tip: 0.0, total: 0.0)
         
-        if let totalPrice = totalPrice {
+        if let totalPrice = total {
             rounded.total = round(totalPrice)
             
-            if let tip = tipAmount {
+            if let tip = tip {
                 rounded.tip = tip + (rounded.total - totalPrice)
             }
         }

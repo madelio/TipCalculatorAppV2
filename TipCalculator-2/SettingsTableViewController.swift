@@ -26,7 +26,7 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDelegate, 
     @IBOutlet weak var canRoundSwitch: UISwitch!
     weak var delegate:SettingsViewControllerDelegate?
     
-    var pickerData = [0.15, 0.18, 0.20]
+    var calc: TipCalculator?
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +34,8 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDelegate, 
         self.tipPicker.dataSource = self
         self.tipPicker.delegate = self
         
-         defaultTipLabel.text = String(pickerData[defaultTipIndex])
+        
+         defaultTipLabel.text = String(describing: calc!.tipPercentage[defaultTipIndex])
         
     }
     
@@ -111,15 +112,15 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDelegate, 
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return pickerData.count
+        return (calc!.tipPercentage.count)
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return String(pickerData[row])
+        return String(describing: calc!.tipPercentage[row])
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        defaultTipLabel.text = String(pickerData[row])
+        defaultTipLabel.text = String(describing: calc!.tipPercentage[row])
         defaultTipIndex = row
         print(defaultTipIndex)
     }
@@ -129,7 +130,7 @@ class SettingsTableViewController: UITableViewController, UIPickerViewDelegate, 
             return defaults.integer(forKey: "defaultTip")
         }
         set {
-            defaultTipLabel.text = String(pickerData[newValue])
+            defaultTipLabel.text = String(describing: calc!.tipPercentage[newValue])
             defaults.set(newValue, forKey: "defaultTip")
             defaults.synchronize()
         }

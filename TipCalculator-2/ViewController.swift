@@ -20,7 +20,6 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
     
     @IBOutlet weak var totalPriceText: UILabel!
     
-    var tipPercentages = [0.15, 0.18, 0.20]
     var defaultTipIndex = 0
     var keyboardYPosition:CGFloat = 0.0
     var inputPriceIsEmpty = true
@@ -29,13 +28,9 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
     var canRound = true
     
     let formatter = NumberFormatter()
-    
-    var originalTotal = 0.0
-    var originalTip = 0.0
-    
     let defaults = UserDefaults.standard
     
-    private var calculator = TipCalculator()
+    private var calc = TipCalculator()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,16 +52,6 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
         }
     }
     
-    
-    func calculateTips() {
-        tipAmount = mealPrice * tipPercentages[tipPercentageSegmentedControl.selectedSegmentIndex]
-        totalPrice = tipAmount + mealPrice
-        
-        originalTotal = totalPrice
-        originalTip = tipAmount
-        
-    }
-    
     func popTotalWindowUp () {
         UIView.animate(withDuration: 1) {
             self.calculatorView.frame.size.height -= self.totalPriceView.frame.size.height
@@ -84,21 +69,27 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
     }
     
     @IBAction func changeTipPercentage(_ sender: UISegmentedControl) {
-        calculateTips()
-        //calculator.calculateTips(with: tipPercentageSegmentedControl.selectedSegmentIndex)
+       
+        calc.calculateTips(with: tipPercentageSegmentedControl.selectedSegmentIndex, mealPrice)
+        
+        tipAmount = calc.tip ?? 0.0
+        totalPrice = calc.total ?? 0.0
     }
     
     @IBAction func roundUpToggle(_ sender: UITapGestureRecognizer) {
         
         if canRound {
             if isRoundedUp == false {
-                totalPrice = round(totalPrice)
-                tipAmount = tipAmount + (totalPrice - originalTotal)
+                let rounded = calc.roundVals()
+                
+                totalPrice = rounded.total
+                tipAmount = rounded.tip
+                
                 isRoundedUp = true
                 
             } else {
-                totalPrice = originalTotal
-                tipAmount = originalTip
+                totalPrice = calc.total!
+                tipAmount = calc.tip!
                 isRoundedUp = false
             }
         }
@@ -110,13 +101,16 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
             popTotalWindowUp()
             inputPriceIsEmpty = false
         }
+        
         if mealPrice == 0.0 {
             pushTotalWindowDown()
             inputPriceIsEmpty = true
         }
         
-        calculateTips()
-        //calculator.calculateTips(with: tipPercentageSegmentedControl.selectedSegmentIndex)
+        calc.calculateTips(with: tipPercentageSegmentedControl.selectedSegmentIndex, mealPrice)
+        
+        tipAmount = calc.tip ?? 0.0
+        totalPrice = calc.total ?? 0.0
     }
     
     var mealPrice: Double {
@@ -135,6 +129,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
     var tipAmount: Double {
         
         get {
+            
             let tipFromFormatter = formatter.number(from: tipAmountText.text ?? "$0.00")!
             return tipFromFormatter.doubleValue
         }
@@ -170,7 +165,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
         if segue.identifier == "toSettings" {
            let settingsVC = segue.destination as! SettingsTableViewController
             settingsVC.delegate = self
-            settingsVC.pickerData = tipPercentages
+            settingsVC.calc = calc
          
         }
     }
